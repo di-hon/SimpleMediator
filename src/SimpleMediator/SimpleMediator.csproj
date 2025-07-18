@@ -10,7 +10,7 @@
     <Product>SimpleMediator</Product>
     <Description>A simple mediator pattern implementation for CQRS in .NET applications.</Description>
     <PackageTags>mediator;cqrs;pattern;command;query;handler</PackageTags>
-    <PackageIcon>icon.png</PackageIcon>
+    <PackageIcon>logo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/dihon/SimpleMediator</RepositoryUrl>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="logo.png" Pack="true" PackagePath="\" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 </Project>
