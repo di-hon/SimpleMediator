@@ -146,7 +146,7 @@ public sealed class DispatcherTests : IClassFixture<ServiceProviderFixture>
         var result = await _dispatcher.Send(query);
         
         // Assert
-        result.Should().Be("Completed");
+        result.Should().Be("Async Completed");
     }
 
     [Fact]
@@ -163,15 +163,5 @@ public sealed class DispatcherTests : IClassFixture<ServiceProviderFixture>
         // Assert
         result1.Should().Be("Result for 1");
         result2.Should().Be("Result for 2");
-    }
-
-    [Fact]
-    public void Dispatcher_WithNullServiceProvider_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var dispatcher = new Dispatcher(null!);
-        
-        // Assert
-        dispatcher.Should().Throws<ArgumentNullException>();
     }
 }

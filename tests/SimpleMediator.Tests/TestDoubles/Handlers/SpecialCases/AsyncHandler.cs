@@ -10,6 +10,6 @@ public class AsyncHandler : IRequestHandler<AsyncQuery, string>
     public async Task<string> Handle(AsyncQuery request, CancellationToken cancellationToken)
     {
         await Task.Delay(request.DelayMs, cancellationToken);
-        return "Async Complete";
+        return "Async Completed";
     }
 }

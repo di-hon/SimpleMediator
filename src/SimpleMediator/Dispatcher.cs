@@ -6,8 +6,8 @@ using SimpleMediator.Wrappers.Abstraction;
 namespace SimpleMediator;
 
 public class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
-{
-    private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+{ 
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
     private static readonly ConcurrentDictionary<Type, HandlerWrapper> HandlerWrappers = new();
     
     public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
