@@ -1,30 +1,29 @@
 [![CI/CD Pipeline](https://github.com/di-hon/SimpleMediator/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/di-hon/SimpleMediator/actions/workflows/ci-cd.yml)
-# SimpleMediator
+# Sinter
 
 A lightweight, easy-to-use mediator pattern implementation for .NET applications. Perfect for implementing CQRS patterns without the complexity.
 
-## Features
+## 🚀 Features
 
-- ✅ Simple and lightweight
-- ✅ No external dependencies (except Microsoft.Extensions.DependencyInjection.Abstractions)
-- ✅ Support for request/response patterns
-- ✅ Support for commands without return values
-- ✅ Automatic handler discovery and registration
-- ✅ Full async/await support
-- ✅ .NET 8.0+ compatible
+- **Blazing Fast** - Uses compiled expression trees instead of reflection
+- **Zero Allocations** - After initial warm-up, no heap allocations
+- **Simple API** - Just one method to remember: `Send`
+- **Thread-Safe** - Concurrent handler resolution with cached compilations
+- **Dependency Injection** - Full support for constructor injection in handlers
+- **Minimal Dependencies** - Only requires `Microsoft.Extensions.DependencyInjection.Abstractions`
 
-## Installation
+## 📦 Installation
 
 ```bash
-dotnet add package SimpleMediator
+dotnet add package Sinter
 ```
 
 Or via Package Manager:
 ```powershell
-Install-Package SimpleMediator
+Install-Package Sinter
 ```
 
-## Quick Start
+## 🔧 Quick Start
 
 ### 1. Define a Query/Command
 
@@ -82,7 +81,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 
 ```csharp
 // In Program.cs or Startup.cs
-builder.Services.AddSimpleMediator(typeof(GetUserByIdQuery).Assembly);
+builder.Services.AddSinter(typeof(GetUserByIdQuery).Assembly);
 ```
 
 ### 4. Use in Controllers
@@ -92,84 +91,86 @@ builder.Services.AddSimpleMediator(typeof(GetUserByIdQuery).Assembly);
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IDispatcher _dispatcher;
     
-    public UsersController(IMediator mediator)
+    public UsersController(IDispatcher dispatcher)
     {
-        _mediator = mediator;
+        _dispatcher = dispatcher;
     }
     
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> Get(int id)
     {
-        var result = await _mediator.Send(new GetUserByIdQuery { Id = id });
+        var result = await _dispatcher.Send(new GetUserByIdQuery { Id = id });
         return Ok(result);
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _mediator.Send(new DeleteUserCommand { Id = id });
+        await _dispatcher.Send(new DeleteUserCommand { Id = id });
         return NoContent();
     }
 }
 ```
 
-## Advanced Usage
-
-### Scanning Multiple Assemblies
+## 🎯 API Reference
+### IDispatcher
 
 ```csharp
-services.AddSimpleMediator(
+public interface IDispatcher
+{
+    Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
+    Task Send(IRequest request, CancellationToken cancellationToken = default);
+}
+```
+
+### Request Interfaces
+
+```csharp
+// Request with response
+public interface IRequest<out TResponse> { }
+
+// Request without response (returns Unit)
+public interface IRequest : IRequest<Unit> { }
+```
+
+### Handler Interfaces
+
+```csharp
+// Handler with response
+public interface IRequestHandler<in TRequest, TResponse> 
+    where TRequest : IRequest<TResponse>
+{
+    Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+}
+
+// Handler without response
+public interface IRequestHandler<in TRequest> : IRequestHandler<TRequest, Unit> 
+    where TRequest : IRequest<Unit> { }
+```
+
+## 🏗️ Advanced Usage
+
+### Assembly Scanning
+
+```csharp
+services.AddSinter(
     typeof(ApplicationLayer).Assembly,
     typeof(AnotherAssembly).Assembly
 );
 ```
 
-### Command Pattern (No Return Value)
+### Lifetime Configuration
+All handlers are registered as Scoped by default, matching the dispatcher's lifetime.
 
-For commands that don't return a value, implement `IRequest` (without type parameter):
-
-```csharp
-public class SendEmailCommand : IRequest
-{
-    public string To { get; set; }
-    public string Subject { get; set; }
-    public string Body { get; set; }
-}
-
-public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand>
-{
-    public async Task<Unit> Handle(SendEmailCommand request, CancellationToken cancellationToken)
-    {
-        // Send email logic
-        await _emailService.SendAsync(request.To, request.Subject, request.Body);
-        return Unit.Value;
-    }
-}
-```
-
-## Best Practices
-
-1. **Keep handlers focused** - Each handler should do one thing
-2. **Use meaningful names** - GetUserByIdQuery vs GetUserQuery
-3. **Validate in handlers** - Add validation logic in your handlers
-4. **Use cancellation tokens** - Pass them through to async operations
-5. **Register scoped** - Handlers are registered as scoped by default
-
-## Performance
-
-SimpleMediator uses:
-- Reflection caching for handler discovery
-- Concurrent dictionaries for type caching
-- Minimal overhead compared to direct method calls
-
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Perfect for projects that need basic CQRS without the complexity!
+## 🙏 Acknowledgments
+Inspired by MediatR but built for maximum performance with minimal overhead.
