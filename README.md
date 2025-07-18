@@ -1,3 +1,4 @@
+[![CI/CD Pipeline](https://github.com/di-hon/SimpleMediator/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/di-hon/SimpleMediator/actions/workflows/ci-cd.yml)
 # SimpleMediator
 
 A lightweight, easy-to-use mediator pattern implementation for .NET applications. Perfect for implementing CQRS patterns without the complexity.
