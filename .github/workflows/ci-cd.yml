@@ -48,8 +48,14 @@ jobs:
     - name: Extract version from tag
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release /p:Version=${{ env.VERSION }}
+
     - name: Pack
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ env.VERSION }} --output ./artifacts
+      run: dotnet pack --configuration --no-build Release /p:PackageVersion=${{ env.VERSION }} --output ./artifacts
 
     - name: Push to NuGet
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
