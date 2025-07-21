@@ -47,7 +47,7 @@ public class RuleBuilderTests
 			Name = "John Doe",
 			Email = "john@example.com",
 			Age = 25,
-			Password = "Pass123"
+			Password = "Pass12345"
 		};
 
 		// Act
@@ -92,7 +92,7 @@ public class RuleBuilderTests
 			Name = "Jo",
 			Email = "test@example.com",
 			Age = 25,
-			Password = "Pass123"
+			Password = "Pass12345"
 		};
 
 		// Act
@@ -114,7 +114,7 @@ public class RuleBuilderTests
 			Name = "John",
 			Email = "invalid",
 			Age = 16,
-			Password = "Pass123"
+			Password = "Pass12345"
 		};
 
 		// Act

@@ -85,7 +85,7 @@ public class PropertyValidatorTests
 
 		// Assert
 		result.Should().NotBeNull();
-		result.PropertyName.Should().Be("Email is invalid");
+		result.ErrorMessage.Should().Be("Email is invalid");
 	}
 
 	[Fact]
@@ -127,6 +127,6 @@ public class PropertyValidatorTests
 
 		// Assert
 		result.Should().NotBeNull();
-		result.PropertyName.Should().Be("Username already exists");
+		result.ErrorMessage.Should().Be("Username already exists");
 	}
 }
