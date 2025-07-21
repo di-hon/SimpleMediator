@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Sinter.Core;
 using Sinter.DependencyInjection;
 
-namespace Sinter.Tests;
+namespace Sinter.Tests.Integrations;
 
 public class IntegrationTests
 {
