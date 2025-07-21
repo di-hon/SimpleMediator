@@ -163,6 +163,6 @@ public sealed class PerformanceTests
         
         // Assert
         var overhead = (double)dispatcherStopWatch.ElapsedTicks / directCallStopWatch.ElapsedTicks;
-        overhead.Should().BeLessThan(40.0, "Dispatcher should have less than 40ms overhead compared to direct calls");
+        overhead.Should().BeLessThan(10.0, "Dispatcher should have less than x overhead compared to direct calls");
     }
 }
